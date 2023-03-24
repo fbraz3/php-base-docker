@@ -1,0 +1,19 @@
+version: '2'
+services:
+ php-base:
+  image: fbraz3/php-base
+  volumes:
+    - /my/app/root/:/app
+  extra_hosts:
+    - "mail:192.168.0.1"
+  restart: always
+  environment:
+    - SMTP_MAIL_SERVER=my.smtp.server
+    - SMTP_USE_TLS=YES
+    - SMTP_USE_STARTTLS=YES
+    - SMTP_AUTH_USER=myuser@myprovider.com
+    - SMTP_AUTH_PASSWORD=myp4ssw0rd
+    - SMTP_AUTH_METHOD=LOGIN
+networks:
+  dockernet:
+    external: true
