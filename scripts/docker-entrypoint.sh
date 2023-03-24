@@ -2,6 +2,8 @@
 
 $(which chmod) 700 /etc/monit/monitrc
 
+FILE_TO_WATCH="/dev/null"
+
 # CLEAR TMP FILES
 /root/autoclean.sh
 
@@ -55,4 +57,6 @@ sleep 1
 /usr/sbin/service monit start
 
 # KEEP CONTAINER ALIVE
-/usr/bin/tail -f /dev/null
+if [ ! -z "$FILE_TO_WATCH" ]; then
+	/usr/bin/tail -f $FILE_TO_WATCH
+fi
