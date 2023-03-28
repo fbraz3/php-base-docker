@@ -23,7 +23,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; apt-get install -yq software-properti
 RUN add-apt-repository -y ppa:ondrej/php;
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
-    php$PHP_VERSION-common php$PHP_VERSION-curl php$PHP_VERSION-fpm \
+    php$PHP_VERSION-common php$PHP_VERSION-curl \
     php$PHP_VERSION-mysql php$PHP_VERSION-opcache php$PHP_VERSION-readline \
     php$PHP_VERSION-xml php$PHP_VERSION-xsl php$PHP_VERSION-gd php$PHP_VERSION-intl \
     php$PHP_VERSION-bz2 php$PHP_VERSION-bcmath php$PHP_VERSION-imap php$PHP_VERSION-gd \
