@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ARG PHP_VERSION=5.6
+ARG PHP_VERSION=8.2
 
 COPY ./scripts/autoclean.sh /root/
 COPY ./scripts/docker-entrypoint.sh ./misc/cronfile.final ./misc/cronfile.system /
