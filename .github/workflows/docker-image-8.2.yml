@@ -33,5 +33,4 @@ jobs:
           build-args: |
             PHP_VERSION=8.2
           tags: |
-            fbraz3/php-base:latest
             fbraz3/php-base:8.2
