@@ -36,6 +36,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     fi; \
     if [ $PHP_VERSION != 8.2 ]; then \
       apt remove -fyq php8.2*; apt -fyq autoremove; \
+    fi; \
+    if [ $PHP_VERSION != 8.3 ]; then \
+      apt remove -fyq php8.3*; apt -fyq autoremove; \
     fi;
 
 #php-phalcon
