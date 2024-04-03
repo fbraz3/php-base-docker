@@ -82,6 +82,9 @@ RUN mkdir /opt/composer; \
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv $HOME/.symfony5/bin/symfony /usr/local/bin/symfony
 
+# Ensure PHP version is the correct one
+RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
+
 COPY ./conf/ssmtp.conf.template /etc/ssmtp/
 COPY ./monit/monitrc /etc/monit/
 COPY ./monit/cron /etc/monit/conf-enabled/
