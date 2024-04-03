@@ -34,7 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     if [ $PHP_VERSION \< 8 ]; then \
       apt-get install -yq php$PHP_VERSION-json; \
     fi; \
-    INSTALLED_VERSION=$(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}')
+    INSTALLED_VERSION=$(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}'); \
     if [ ! -z "$INSTALLED_VERSION" ] && [ $PHP_VERSION != $INSTALLED_VERSION ]; then \
       apt remove -fyq php$INSTALLED_VERSION*; apt -fyq autoremove; \
     fi;
