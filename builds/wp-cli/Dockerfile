@@ -1,4 +1,15 @@
-FROM php:8.2-cli AS php-tools
+ARG PHP_VERSION=8.2
+ARG BUILD_ARCH="amd64"
+FROM fbraz3/php-base:$PHP_VERSION-$BUILD_ARCH
+
+ARG PHP_VERSION
+ARG BUILD_ARCH
+ENV DEBIAN_FRONTEND=noninteractive
+
+#ensure php repo is up-to-date
+RUN for i in {1..10}; do \
+      add-apt-repository -y ppa:ondrej/php && break || sleep 10; \
+    done
 
 RUN apt-get update && apt-get install -y curl
 RUN mkdir -p /opt/tools
@@ -7,11 +18,5 @@ RUN mkdir -p /opt/tools
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && mv wp-cli.phar /opt/tools/wp && \
     ln -s /opt/tools/wp /usr/local/bin/wp
-
-ARG PHP_VERSION=8.2
-ARG BUILD_ARCH="amd64"
-FROM fbraz3/php-base:$PHP_VERSION-$BUILD_ARCH
-
-COPY --from=php-tools /usr/local/bin/wp /usr/local/bin/wp
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
