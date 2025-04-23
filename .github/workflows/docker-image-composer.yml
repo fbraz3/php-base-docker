@@ -1,9 +1,9 @@
-name: Build Docker Image - WP-Cli
+name: Build Docker Image - composer
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 6 * * 0'
+    - cron: '40 6 * * 0'
 
 jobs:
   docker:
@@ -106,13 +106,13 @@ jobs:
         with:
           platforms: ${{ matrix.architecture }}
           context: .
-          file: builds/wp-cli/Dockerfile
+          file: builds/composer/Dockerfile
           push: true
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
             BUILD_ARCH=${{ steps.prep.outputs.arch_short }}
           tags: |
-            fbraz3/php-base:wp-cli-${{ matrix.php_version }}
-            fbraz3/php-base:wp-cli-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
-            ${{ matrix.is_latest && 'fbraz3/php-base:wp-cli-latest' || '' }}
-            ${{ matrix.is_latest && format('fbraz3/php-base:wp-cli-latest-{0}', steps.prep.outputs.arch_short) || '' }}
+            fbraz3/php-base:composer-${{ matrix.php_version }}
+            fbraz3/php-base:composer-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
+            ${{ matrix.is_latest && 'fbraz3/php-base:composer-latest' || '' }}
+            ${{ matrix.is_latest && format('fbraz3/php-base:composer-latest-{0}', steps.prep.outputs.arch_short) || '' }}
