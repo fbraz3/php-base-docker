@@ -1,9 +1,9 @@
-name: Build Docker Image - wp-cli
+name: Build Docker Image - symfony
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 6 * * 0'
+    - cron: '20 6 * * 0'
 
 jobs:
   build_images:
@@ -101,23 +101,23 @@ jobs:
         env:
           ARCH: ${{ matrix.architecture }}
 
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v9
-        with:
-          workflow: docker-image-vanilla.yml
-          workflow_conclusion: success
-          name: php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
-          path: ${{ runner.temp }}
-          use_unzip: true
-
-      - name: Load image
-        run: |
-          docker load --input ${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
-
-      - name: Add image to Buildx cache
-        run: |
-          docker buildx imagetools create --tag fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }} fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}    
+#      - name: Download artifact
+#        id: download-artifact
+#        uses: dawidd6/action-download-artifact@v9
+#        with:
+#          workflow: docker-image-vanilla.yml
+#          workflow_conclusion: success
+#          name: php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+#          path: ${{ runner.temp }}
+#          use_unzip: true
+#
+#      - name: Load image
+#        run: |
+#          docker load --input ${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+#
+#      - name: Add image to Buildx cache
+#        run: |
+#          docker buildx imagetools create --tag fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }} fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -126,7 +126,8 @@ jobs:
           context: .
           file: builds/wp-cli/Dockerfile
           push: true
-          load: true
+#          load: true
+          cache-from: type=gha
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
             BUILD_ARCH=${{ steps.prep.outputs.arch_short }}

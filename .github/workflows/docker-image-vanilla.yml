@@ -1,4 +1,4 @@
-name: Build Docker Image - Vanilla
+name: Build Docker Image - vanilla
 
 on:
   workflow_dispatch:
@@ -116,12 +116,12 @@ jobs:
             fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
             ${{ matrix.is_latest && 'fbraz3/php-base:latest' || '' }}
             ${{ matrix.is_latest && format('fbraz3/php-base:latest-{0}', steps.prep.outputs.arch_short) || '' }}
-          outputs: type=docker,dest=${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          retention-days: 1
-          overwrite: true
-          name: php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
-          path: ${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+#          outputs: type=docker,dest=${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+#
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          retention-days: 1
+#          overwrite: true
+#          name: php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+#          path: ${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
