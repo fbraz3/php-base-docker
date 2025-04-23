@@ -6,7 +6,7 @@ on:
     - cron: '0 6 * * 0'
 
 jobs:
-  docker:
+  build_images:
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
@@ -108,7 +108,6 @@ jobs:
           context: .
           file: builds/vanilla/Dockerfile
           push: true
-          cache-to: type=registry,ref=fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-cache,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
@@ -116,3 +115,12 @@ jobs:
             fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
             ${{ matrix.is_latest && 'fbraz3/php-base:latest' || '' }}
             ${{ matrix.is_latest && format('fbraz3/php-base:latest-{0}', steps.prep.outputs.arch_short) || '' }}
+          outputs: type=docker,dest=${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          retention-days: 1
+          overwrite: true
+          name: php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+          path: ${{ runner.temp }}/php-base-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
