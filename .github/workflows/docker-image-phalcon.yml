@@ -108,6 +108,7 @@ jobs:
           context: .
           file: builds/phalcon/Dockerfile
           push: true
+          cache-from: type=registry,ref=fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
             BUILD_ARCH=${{ steps.prep.outputs.arch_short }}

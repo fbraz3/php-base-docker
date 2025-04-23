@@ -108,6 +108,7 @@ jobs:
           context: .
           file: builds/vanilla/Dockerfile
           push: true
+          cache-to: type=registry,ref=fbraz3/php-base:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}:cache,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
