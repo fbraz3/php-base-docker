@@ -1,4 +1,4 @@
-name: Build Docker Image - vanilla
+name: Build Docker Image
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 jobs:
   build_images:
     runs-on: ubuntu-latest
-    continue-on-error: true
+#    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -106,7 +106,7 @@ jobs:
         with:
           platforms: ${{ matrix.architecture }}
           context: .
-          file: builds/vanilla/Dockerfile
+          file: flavors/vanilla/Dockerfile
           push: true
           cache-to: type=gha,mode=max
           build-args: |

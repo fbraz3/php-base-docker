@@ -3,12 +3,12 @@ name: Build Docker Image - phalcon
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 6 * * 0'
+    - cron: '40 6 * * 0'
 
 jobs:
   build_images:
     runs-on: ubuntu-latest
-    continue-on-error: true
+#    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -124,7 +124,7 @@ jobs:
         with:
           platforms: ${{ matrix.architecture }}
           context: .
-          file: builds/phalcon/Dockerfile
+          file: flavors/phalcon/Dockerfile
           push: true
 #          load: true
           cache-from: type=gha

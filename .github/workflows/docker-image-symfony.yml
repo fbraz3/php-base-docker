@@ -3,12 +3,12 @@ name: Build Docker Image - symfony
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 6 * * 0'
+    - cron: '35 6 * * 0'
 
 jobs:
   build_images:
     runs-on: ubuntu-latest
-    continue-on-error: true
+#    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -124,7 +124,7 @@ jobs:
         with:
           platforms: ${{ matrix.architecture }}
           context: .
-          file: builds/symfony/Dockerfile
+          file: flavors/symfony/Dockerfile
           push: true
 #          load: true
           cache-from: type=gha

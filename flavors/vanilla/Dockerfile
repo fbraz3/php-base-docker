@@ -3,8 +3,8 @@ FROM ubuntu:22.04
 ARG PHP_VERSION=8.2
 ENV DEBIAN_FRONTEND=noninteractive
 
-COPY ../../scripts/autoclean.sh /root/
-COPY ../../scripts/docker-entrypoint.sh ./misc/cronfile.final ./misc/cronfile.system /
+COPY ../../assets/scripts/autoclean.sh /root/
+COPY ../../assets/scripts/docker-entrypoint.sh ../../assets/misc/cronfile.final ../../assets/misc/cronfile.system /
 RUN mkdir /entrypoints
 RUN echo "#!/bin/bash" > /entrypoints/null.sh
 
@@ -45,9 +45,9 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
 # Ensure PHP version is the correct one
 RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
 
-COPY ../../conf/ssmtp.conf.template /etc/ssmtp/
-COPY ../../monit/monitrc /etc/monit/
-COPY ../../monit/cron /etc/monit/conf-enabled/
-COPY ../../startup/ssmtp.sh /entrypoints
+COPY ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
+COPY ../../assets/monit/monitrc /etc/monit/
+COPY ../../assets/monit/cron /etc/monit/conf-enabled/
+COPY ../../assets/startup/ssmtp.sh /entrypoints
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

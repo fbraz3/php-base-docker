@@ -1,14 +1,14 @@
-name: Build Docker Image - symfony
+name: Build Docker Image - wp-cli
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 6 * * 0'
+    - cron: '30 6 * * 0'
 
 jobs:
   build_images:
     runs-on: ubuntu-latest
-    continue-on-error: true
+#    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -124,7 +124,7 @@ jobs:
         with:
           platforms: ${{ matrix.architecture }}
           context: .
-          file: builds/wp-cli/Dockerfile
+          file: flavors/wp-cli/Dockerfile
           push: true
 #          load: true
           cache-from: type=gha
