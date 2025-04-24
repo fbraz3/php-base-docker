@@ -1,10 +1,11 @@
 ARG PHP_VERSION=8.2
 ARG BUILD_ARCH="amd64"
-FROM fbraz3/php-base:$PHP_VERSION-$BUILD_ARCH
+FROM fbraz3/php-cli:$PHP_VERSION
 
 ARG PHP_VERSION
 ARG BUILD_ARCH
 ENV DEBIAN_FRONTEND=noninteractive
+ENV ENTRYPOINT_COMMAND="/usr/local/bin/wp --allow-root"
 
 #ensure php repo is up-to-date
 RUN for i in {1..10}; do \
@@ -18,5 +19,7 @@ RUN mkdir -p /opt/tools
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && mv wp-cli.phar /opt/tools/wp && \
     ln -s /opt/tools/wp /usr/local/bin/wp
+
+RUN /usr/local/bin/wp --info || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

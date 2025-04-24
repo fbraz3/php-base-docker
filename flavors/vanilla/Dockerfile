@@ -2,29 +2,27 @@ FROM ubuntu:22.04
 
 ARG PHP_VERSION=8.2
 ENV DEBIAN_FRONTEND=noninteractive
+ENV ENTRYPOINT_COMMAND=/usr/bin/php
 
-COPY ../../assets/scripts/autoclean.sh /root/
-COPY ../../assets/scripts/docker-entrypoint.sh ../../assets/misc/cronfile.final ../../assets/misc/cronfile.system /
+COPY ../../assets/scripts/docker-entrypoint.sh /
 RUN mkdir /entrypoints
 RUN echo "#!/bin/bash" > /entrypoints/null.sh
 
 RUN echo $PHP_VERSION > /PHP_VERSION; \
-    chmod +x /root/autoclean.sh; \
-    chmod +x /docker-entrypoint.sh; \
-    mkdir /app; \
-    mkdir /run/php/; \
-    mkdir -p /app/public; \
-    apt-get update;
+    chmod +x /docker-entrypoint.sh;
 
-RUN apt-get install -yq software-properties-common apt-transport-https \
-    cron vim ssmtp monit wget unzip curl less git; \
-    /usr/bin/unattended-upgrades -v;
+# Add support for add-apt-repository
+RUN apt-get update && apt-get install -yq software-properties-common apt-transport-https
 
-#php-base
+# Add php repository
 RUN for i in {1..10}; do \
       add-apt-repository -y ppa:ondrej/php && break || sleep 10; \
     done
 
+# Add utilities
+RUN apt-get -yq install vim ssmtp wget unzip curl less git
+
+# Add PHP packages
 RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
     php$PHP_VERSION-common php$PHP_VERSION-curl \
     php$PHP_VERSION-mysql php$PHP_VERSION-opcache php$PHP_VERSION-readline \
@@ -42,12 +40,18 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
       apt remove -fyq php$INSTALLED_VERSION*; apt -fyq autoremove; \
     fi;
 
+# Apply latest security updates
+RUN /usr/bin/unattended-upgrades -v
+
 # Ensure PHP version is the correct one
 RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
 
+# Add SSMTP configuration
 COPY ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
-COPY ../../assets/monit/monitrc /etc/monit/
-COPY ../../assets/monit/cron /etc/monit/conf-enabled/
 COPY ../../assets/startup/ssmtp.sh /entrypoints
+
+# Configure workspace
+RUN mkdir /workspace
+WORKDIR /workspace
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
