@@ -20,6 +20,6 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && mv wp-cli.phar /opt/tools/wp && \
     ln -s /opt/tools/wp /usr/local/bin/wp
 
-RUN /usr/local/bin/wp --info || exit 1
+#RUN /usr/local/bin/wp --info || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

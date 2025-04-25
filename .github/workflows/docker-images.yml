@@ -116,6 +116,12 @@ jobs:
             fbraz3/php-cli:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
 
+      - name: Test php image to check if version matches
+        run: |
+          docker run --rm fbraz3/php-cli:${{ matrix.php_version }} -v | grep -q "${{ matrix.php_version }}" || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+
       - name: Build Phalcon image
         uses: docker/build-push-action@v6
         with:
@@ -130,6 +136,12 @@ jobs:
           tags: |
             fbraz3/php-cli:${{ matrix.php_version }}-phalcon
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest-phalcon' || '' }}
+
+      - name: Test php modules to ensure phalcon is loaded
+        run: |
+          docker run --rm fbraz3/php-cli:${{ matrix.php_version }}-phalcon -m | grep -q "phalcon" || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
 
       - name: Build Composer Image
         uses: docker/build-push-action@v6
@@ -147,7 +159,13 @@ jobs:
             fbraz3/php-composer:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
 
-      - name: Build Composer image
+      - name: Test composer to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/php-composer:${{ matrix.php_version }} --version || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+
+      - name: Build wp-cli image
         uses: docker/build-push-action@v6
         with:
           platforms: ${{ matrix.architecture }}
@@ -162,6 +180,12 @@ jobs:
           tags: |
             fbraz3/wp-cli:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/wp-cli:latest' || '' }}
+
+      - name: Test wp-cli to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/wp-cli:${{ matrix.php_version }} --info || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
 
       - name: Build Symfony image
         uses: docker/build-push-action@v6
@@ -178,3 +202,9 @@ jobs:
           tags: |
             fbraz3/symfony-cli:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/symfony-cli:latest' || '' }}
+
+      - name: Test Symfony with -v to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/symfony-cli:${{ matrix.php_version }} -v || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}

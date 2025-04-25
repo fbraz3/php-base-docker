@@ -44,7 +44,7 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
 RUN /usr/bin/unattended-upgrades -v
 
 # Ensure PHP version is the correct one
-RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
+#RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
 
 # Add SSMTP configuration
 COPY ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
