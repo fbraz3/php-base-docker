@@ -101,37 +101,178 @@ jobs:
         env:
           ARCH: ${{ matrix.architecture }}
 
-      - name: Build vanilla image
-        uses: ./.github/workflows/vanilla.yml
+      - name: Build Base PHP Docker image
+        uses: docker/build-push-action@v6
         with:
-          php_version: ${{ matrix.php_version }}
-          architecture: ${{ matrix.architecture }}
-          is_latest: ${{ matrix.is_latest }}
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/vanilla/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
+
+      - name: Test php image to check if version matches
+        run: |
+          docker run --rm fbraz3/php-cli:${{ matrix.php_version }} -v | grep -q "${{ matrix.php_version }}" || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+
+      - name: Push Base PHP Docker image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/vanilla/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
 
       - name: Build Phalcon image
-        uses: ./.github/workflows/phalcon.yml
+        uses: docker/build-push-action@v6
         with:
-          php_version: ${{ matrix.php_version }}
-          architecture: ${{ matrix.architecture }}
-          is_latest: ${{ matrix.is_latest }}
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/phalcon/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}-phalcon
+            ${{ matrix.is_latest && 'fbraz3/php-cli:latest-phalcon' || '' }}
 
-      - name: Build Composer Image
-        uses: ./.github/workflows/composer.yml
-        with:
-          php_version: ${{ matrix.php_version }}
-          architecture: ${{ matrix.architecture }}
-          is_latest: ${{ matrix.is_latest }}
+      - name: Test php modules to ensure phalcon is loaded
+        run: |
+          docker run --rm fbraz3/php-cli:${{ matrix.php_version }}-phalcon -m | grep -q "phalcon" || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
 
-      - name: Build Symfony Image
-        uses: ./.github/workflows/symfony.yml
+      - name: Push Phalcon image
+        uses: docker/build-push-action@v6
         with:
-          php_version: ${{ matrix.php_version }}
-          architecture: ${{ matrix.architecture }}
-          is_latest: ${{ matrix.is_latest }}
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/phalcon/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}-phalcon
+            ${{ matrix.is_latest && 'fbraz3/php-cli:latest-phalcon' || '' }}
 
-      - name: Build wp-cli Image
-        uses: ./.github/workflows/wp-cli.yml
+      - name: Build Composer image
+        uses: docker/build-push-action@v6
         with:
-          php_version: ${{ matrix.php_version }}
-          architecture: ${{ matrix.architecture }}
-          is_latest: ${{ matrix.is_latest }}
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/composer/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-composer:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
+
+      - name: Test composer to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/php-composer:${{ matrix.php_version }} --version || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+
+      - name: Push Composer image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/composer/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/php-composer:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
+
+      - name: Build WP-CLI image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/wp-cli/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/wp-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/wp-cli:latest' || '' }}
+
+      - name: Test WP-CLI to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/wp-cli:${{ matrix.php_version }} --info || exit 1
+
+      - name: Push WP-CLI image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/wp-cli/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/wp-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/wp-cli:latest' || '' }}
+
+      - name: Build Symfony image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/symfony/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/symfony-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/symfony-cli:latest' || '' }}
+
+      - name: Test Symfony with -v to ensure it loads properly
+        run: |
+          docker run --rm fbraz3/symfony-cli:${{ matrix.php_version }} -v || exit 1
+
+      - name: Push Symfony image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/symfony/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+          tags: |
+            fbraz3/symfony-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/symfony-cli:latest' || '' }}
