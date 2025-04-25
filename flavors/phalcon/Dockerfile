@@ -21,10 +21,15 @@ RUN if dpkg --compare-versions "${PHP_VERSION}" gt "7.2"; then \
     fi
 
 # Install required packages
+# There is a bus on php7.2 phalcon package, need to fallback to phalcon3 to fix it!
 RUN if dpkg --compare-versions "${PHP_VERSION}" gt "7.1" && dpkg --compare-versions "${PHP_VERSION}" lt "8.0"; then \
       apt-get install -y "php${PHP_VERSION}-phalcon4"; \
     else \
       apt-get install -y "php${PHP_VERSION}-phalcon"; \
+    fi; \
+    if dpkg --compare-versions "${PHP_VERSION}" eq "7.2"; then \
+      apt-get remove -y "php${PHP_VERSION}-phalcon4"; \
+      apt-get install -y "php${PHP_VERSION}-phalcon3"; \
     fi
 
 RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION

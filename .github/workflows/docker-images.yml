@@ -139,6 +139,7 @@ jobs:
 
       - name: Test php modules to ensure phalcon is loaded
         run: |
+          docker run --rm fbraz3/php-cli:${{ matrix.php_version }}-phalcon -v | grep -q "${{ matrix.php_version }}" || exit 1
           docker run --rm fbraz3/php-cli:${{ matrix.php_version }}-phalcon -m | grep -q "phalcon" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
@@ -161,7 +162,7 @@ jobs:
 
       - name: Test composer to ensure it loads properly
         run: |
-          docker run --rm fbraz3/php-composer:${{ matrix.php_version }} --version || exit 1
+          docker run --rm fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
 
@@ -183,7 +184,7 @@ jobs:
 
       - name: Test wp-cli to ensure it loads properly
         run: |
-          docker run --rm fbraz3/wp-cli:${{ matrix.php_version }} --info || exit 1
+          docker run --rm fbraz3/wp-cli:${{ matrix.php_version }} --version 2>&1 | grep -q "WP-CLI" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
 
@@ -205,6 +206,6 @@ jobs:
 
       - name: Test Symfony with -v to ensure it loads properly
         run: |
-          docker run --rm fbraz3/symfony-cli:${{ matrix.php_version }} -v || exit 1
+          docker run --rm fbraz3/symfony-cli:${{ matrix.php_version }} -v 2>&1 | grep -q "symfony" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
