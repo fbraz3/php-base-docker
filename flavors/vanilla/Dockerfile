@@ -43,9 +43,6 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
 # Apply latest security updates
 RUN /usr/bin/unattended-upgrades -v
 
-# Ensure PHP version is the correct one
-#RUN if [ $PHP_VERSION != $(php -v |head -n1 | awk '{print $2}' | awk -F'.' '{print $1"."$2}') ]; then exit 1; fi
-
 # Add SSMTP configuration
 COPY ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
 COPY ../../assets/startup/ssmtp.sh /entrypoints
@@ -53,5 +50,7 @@ COPY ../../assets/startup/ssmtp.sh /entrypoints
 # Configure workspace
 RUN mkdir /workspace
 WORKDIR /workspace
+
+RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

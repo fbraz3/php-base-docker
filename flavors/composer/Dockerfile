@@ -21,6 +21,6 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /opt/tools/composer && \
     ln -s /opt/tools/composer /usr/local/bin/composer
 
-#RUN /usr/local/bin/composer --version || exit 1
+RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

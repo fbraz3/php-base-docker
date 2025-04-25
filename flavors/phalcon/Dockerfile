@@ -19,6 +19,6 @@ RUN if dpkg --compare-versions "${PHP_VERSION}" gt "7.1" && dpkg --compare-versi
       apt-get update && apt-get install -y "php${PHP_VERSION}-phalcon"; \
     fi
 
-#RUN /usr/bin/php -m |grep "phalcon" || exit 1
+RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

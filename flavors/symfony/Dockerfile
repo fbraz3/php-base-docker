@@ -20,6 +20,6 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv $HOME/.symfony*/bin/symfony /opt/tools/symfony && \
     ln -s /opt/tools/symfony /usr/local/bin/symfony
 
-#RUN /usr/local/bin/symfony -v || exit 1
+RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
