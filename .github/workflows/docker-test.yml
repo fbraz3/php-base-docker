@@ -17,9 +17,9 @@ jobs:
           - php_version: '8.2'
             architecture: linux/amd64
             is_latest: false
-          - php_version: '8.2'
-            architecture: linux/arm64
-            is_latest: false
+          #- php_version: '8.2'
+          #  architecture: linux/arm64
+          #  is_latest: false
 
     services:
       registry:
