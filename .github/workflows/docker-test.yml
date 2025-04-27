@@ -52,6 +52,7 @@ jobs:
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
             fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-test
+            fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-build
 
       - name: Test php image to check if version matches
         run: |
@@ -59,7 +60,7 @@ jobs:
         env:
           PHP_VERSION: ${{ matrix.php_version }}
 
-      - name: Build PHP Docker image
+      - name: Build and push PHP Docker image
         uses: docker/build-push-action@v6
         with:
           platforms: ${{ matrix.architecture }}
@@ -73,3 +74,39 @@ jobs:
           tags: |
             fbraz3/php-cli:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
+
+      - name: Build Phalcon TEST image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/phalcon/Dockerfile
+          load: true
+          cache-from: type=gha
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+            BUILD_ARCH=${{ steps.prep.outputs.arch_short }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test
+
+      - name: Test php modules to ensure phalcon is loaded
+        run: |
+          docker run --rm --platform=${{ matrix.architecture }} fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test -v | grep -q "${{ matrix.php_version }}" || exit 1
+          docker run --rm --platform=${{ matrix.architecture }} fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test -m | grep -q "phalcon" || exit 1
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+
+      - name: Build and push Phalcon image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.architecture }}
+          context: .
+          file: flavors/phalcon/Dockerfile
+          push: true
+          cache-from: type=gha
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
+            BUILD_ARCH=${{ steps.prep.outputs.arch_short }}
+          tags: |
+            fbraz3/php-cli:${{ matrix.php_version }}-phalcon
+            ${{ matrix.is_latest && 'fbraz3/php-cli:latest-phalcon' || '' }}
