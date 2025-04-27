@@ -55,7 +55,7 @@ jobs:
           platforms: ${{ matrix.architecture }}
           context: .
           file: flavors/vanilla/Dockerfile
-          load: true
+          push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -75,8 +75,9 @@ jobs:
           platforms: ${{ matrix.architecture }}
           context: .
           file: flavors/phalcon/Dockerfile
-          load: true
+          push: true
           cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
             BUILD_ARCH=${{ steps.prep.outputs.arch_short }}
