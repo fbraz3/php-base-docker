@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  LOCAL_REGISTRY: 127.0.0.1:5000
+  LOCAL_REGISTRY: 127.0.0.1:4000
   REMOTE_REGISTRY: docker.io
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
       registry:
         image: registry:3
         ports:
-          - 5000:5000
+          - 4000:5000
 
     steps:
       - name: Checkout
