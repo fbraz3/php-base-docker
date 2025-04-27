@@ -25,7 +25,7 @@ jobs:
       registry:
         image: registry:3
         ports:
-          - ${{env.LOCAL_REGISTRY}}:5555
+          - 3000:5555
 
     steps:
       #- name: Set up Local Registry
