@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Set up Local Registry
         run: |
-          docker run -d -p ${{env.LOCAL_REGISTRY}}:5000 --restart=always --name registry3 registry:3
+          docker run -d -p ${{env.LOCAL_REGISTRY}}:5000 --restart=always --name registry registry:2
 
       - name: Checkout
         uses: actions/checkout@v3
