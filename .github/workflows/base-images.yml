@@ -137,4 +137,3 @@ jobs:
             fbraz3/php-base:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
             ${{ matrix.is_latest && 'fbraz3/php-base:latest' || '' }}
-            
