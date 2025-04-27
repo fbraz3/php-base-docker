@@ -53,6 +53,7 @@ jobs:
           tags: |
             fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-test
             fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-build
+          outputs: type=docker,dest=${{ runner.temp }}/php-cli-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
 
       - name: Test php image to check if version matches
         run: |
@@ -74,6 +75,11 @@ jobs:
           tags: |
             fbraz3/php-cli:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
+            
+      - name: Load image
+        run: |
+          docker load --input ${{ runner.temp }}/php-cli-${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}.tar
+          docker image ls -a
 
       - name: Build Phalcon TEST image
         uses: docker/build-push-action@v6
