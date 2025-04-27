@@ -3,6 +3,10 @@ name: Test Docker
 on:
   workflow_dispatch:
 
+env:
+  LOCAL_REGISTRY: localhost:5000
+  REMOTE_REGISTRY: docker.io
+
 jobs:
   build_images:
     runs-on: ubuntu-latest
@@ -16,6 +20,12 @@ jobs:
           - php_version: '8.2'
             architecture: linux/arm64
             is_latest: false
+
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
 
     steps:
       - name: Checkout
@@ -51,12 +61,11 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
-            fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-test
-            fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-build
+            ${{LOCAL_REGISTRY}}/fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}
 
       - name: Test php image to check if version matches
         run: |
-          docker run --rm --platform=${{ matrix.architecture }} fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }}-test -v | grep -q "${{ matrix.php_version }}" || exit 1
+          docker run --rm --platform=${{ matrix.architecture }} ${{LOCAL_REGISTRY}}/fbraz3/php-cli:${{ matrix.php_version }}-${{ steps.prep.outputs.arch_short }} -v | grep -q "${{ matrix.php_version }}" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
 
@@ -71,12 +80,19 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
             BUILD_ARCH=${{ steps.prep.outputs.arch_short }}
+            REGISTRY=${{LOCAL_REGISTRY}}
           tags: |
-            fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test
+            ${{LOCAL_REGISTRY}}/fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}
 
       - name: Test php modules to ensure phalcon is loaded
         run: |
-          docker run --rm --platform=${{ matrix.architecture }} fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test -v | grep -q "${{ matrix.php_version }}" || exit 1
-          docker run --rm --platform=${{ matrix.architecture }} fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }}-test -m | grep -q "phalcon" || exit 1
+          ${{LOCAL_REGISTRY}}/fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }} -v | grep -q "${{ matrix.php_version }}" || exit 1
+          ${{LOCAL_REGISTRY}}/fbraz3/php-cli:${{ matrix.php_version }}-phalcon-${{ steps.prep.outputs.arch_short }} -m | grep -q "phalcon" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
+
+      - name: Run docker image ls to check if image is present
+        run: |
+          docker image ls -a
+        
+        
