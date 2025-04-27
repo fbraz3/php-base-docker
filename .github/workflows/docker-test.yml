@@ -21,16 +21,16 @@ jobs:
           #  architecture: linux/arm64
           #  is_latest: false
 
-    services:
-      registry:
-        image: registry:3
-        ports:
-          - 3000:5555
+    #services:
+    #  registry:
+    #    image: registry:3
+    #    ports:
+    #      - 4000:5000
 
     steps:
-      #- name: Set up Local Registry
-      #  run: |
-      #    docker run -d -p ${{env.LOCAL_REGISTRY}}:5000 --restart=always --name registry3 registry:3
+      - name: Set up Local Registry
+        run: |
+          docker run -d -p ${{env.LOCAL_REGISTRY}}:5000 --restart=always --name registry3 registry:3
 
       - name: Checkout
         uses: actions/checkout@v3
