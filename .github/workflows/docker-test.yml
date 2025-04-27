@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  LOCAL_REGISTRY: localhost:5000
+  LOCAL_REGISTRY: registry:5000
   REMOTE_REGISTRY: docker.io
 
 jobs:
