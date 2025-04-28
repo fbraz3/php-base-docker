@@ -1,9 +1,9 @@
-name: Build WP-CLI Images
+name: Build WP-Cli Images
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * 0'
+    - cron: '30 7 * * 0'
 
 jobs:
   build_images:
