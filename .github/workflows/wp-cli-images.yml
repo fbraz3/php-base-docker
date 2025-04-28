@@ -1,9 +1,9 @@
-name: Build Composer Images
+name: Build WP-CLI Images
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * 0'
+    - cron: '0 9 * * 0'
 
 jobs:
   build_images:
@@ -51,31 +51,31 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push PHP Base Image
+      - name: Build and Push WP-CLI Image
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: .
-          file: flavors/composer/Dockerfile
+          file: flavors/wp-cli/Dockerfile
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
-            fbraz3/php-composer:${{ matrix.php_version }}
-            ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
+            fbraz3/wp-cli:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/wp-cli:latest' || '' }}
 
       - name: DEBUG Test images
         run: |
-          docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v
-          docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v
+          docker run --rm --platform=linux/amd64 fbraz3/wp-cli:${{ matrix.php_version }} --version
+          docker run --rm --platform=linux/arm64 fbraz3/wp-cli:${{ matrix.php_version }} --version
         env:
           PHP_VERSION: ${{ matrix.php_version }}
 
       - name: Test images
         run: |
-          docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
-          docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
+          docker run --rm --platform=linux/amd64 fbraz3/wp-cli:${{ matrix.php_version }} --version 2>&1 | grep -q "WP-CLI" || exit 1
+          docker run --rm --platform=linux/arm64 fbraz3/wp-cli:${{ matrix.php_version }} --version 2>&1 | grep -q "WP-CLI" || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}
