@@ -66,15 +66,10 @@ jobs:
             fbraz3/php-composer:${{ matrix.php_version }}
             ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
 
-      - name: DEBUG Test images
+      - name: Test images
         run: |
           docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v
           docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v
-        env:
-          PHP_VERSION: ${{ matrix.php_version }}
-
-      - name: Test images
-        run: |
           docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
           docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
         env:
