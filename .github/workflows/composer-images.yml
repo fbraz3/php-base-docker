@@ -1,9 +1,9 @@
-name: Build Phalcon Images
+name: Build Composer Images
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 6 * * 0'
+    - cron: '20 6 * * 0'
 
 jobs:
   build_images:
@@ -51,29 +51,31 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push PHP Phalcon Images
+      - name: Build and Push PHP Base Image
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: .
-          file: flavors/phalcon/Dockerfile
+          file: flavors/composer/Dockerfile
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
-            fbraz3/php-cli:${{ matrix.php_version }}-phalcon
-            fbraz3/php-base:${{ matrix.php_version }}-phalcon
-            ${{ matrix.is_latest && 'fbraz3/php-cli:latest-phalcon' || '' }}
-            ${{ matrix.is_latest && 'fbraz3/php-base:latest-phalcon' || '' }}
-            
+            fbraz3/php-composer:${{ matrix.php_version }}
+            ${{ matrix.is_latest && 'fbraz3/php-composer:latest' || '' }}
+
+      - name: DEBUG Test images
+        run: |
+          docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v
+          docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
 
       - name: Test images
         run: |
-          docker run --rm --platform=linux/amd64 fbraz3/php-cli:${{ matrix.php_version }}-phalcon -v | grep -q "${{ matrix.php_version }}" || exit 1
-          docker run --rm --platform=linux/arm64 fbraz3/php-cli:${{ matrix.php_version }}-phalcon -v | grep -q "${{ matrix.php_version }}" || exit 1
-          docker run --rm --platform=linux/amd64 fbraz3/php-cli:${{ matrix.php_version }}-phalcon -m | grep -q "phalcon" || exit 1
-          docker run --rm --platform=linux/arm64 fbraz3/php-cli:${{ matrix.php_version }}-phalcon -m | grep -q "phalcon" || exit 1
+          docker run --rm --platform=linux/amd64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
+          docker run --rm --platform=linux/arm64 fbraz3/php-composer:${{ matrix.php_version }} -v 2>&1 | grep -q "Composer version " || exit 1
         env:
           PHP_VERSION: ${{ matrix.php_version }}

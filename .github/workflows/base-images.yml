@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push PHP Base Image
+      - name: Build and Push PHP Base Images
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
@@ -68,7 +68,7 @@ jobs:
             ${{ matrix.is_latest && 'fbraz3/php-cli:latest' || '' }}
             ${{ matrix.is_latest && 'fbraz3/php-base:latest' || '' }}
 
-      - name: Test php image to check if version matches
+      - name: Test images
         run: |
           docker run --rm --platform=linux/amd64 fbraz3/php-cli:${{ matrix.php_version }} -v | grep -q "${{ matrix.php_version }}" || exit 1
           docker run --rm --platform=linux/arm64 fbraz3/php-cli:${{ matrix.php_version }} -v | grep -q "${{ matrix.php_version }}" || exit 1
