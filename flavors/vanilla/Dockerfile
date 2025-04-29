@@ -4,12 +4,11 @@ ARG PHP_VERSION=8.2
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ENTRYPOINT_COMMAND=/usr/bin/php
 
-COPY ../../assets/scripts/docker-entrypoint.sh /
+COPY --chmod=755 ../../assets/scripts/docker-entrypoint.sh /
 RUN mkdir /entrypoints
 RUN echo "#!/bin/bash" > /entrypoints/null.sh
 
-RUN echo $PHP_VERSION > /PHP_VERSION; \
-    chmod +x /docker-entrypoint.sh;
+RUN echo $PHP_VERSION > /PHP_VERSION
 
 # Add support for add-apt-repository
 RUN apt-get update && apt-get install -yq software-properties-common apt-transport-https
@@ -44,13 +43,19 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
 RUN /usr/bin/unattended-upgrades -v
 
 # Add SSMTP configuration
-COPY ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
-COPY ../../assets/startup/ssmtp.sh /entrypoints
+COPY --chmod=755 ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
+COPY --chmod=755 ../../assets/startup/ssmtp.sh /entrypoints/
 
-# Configure workspace
-RUN mkdir /workspace
-WORKDIR /workspace
-
+# Enforce php version
 RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
+
+#add php user
+RUN useradd -u 1000 -m -s /bin/bash php; \
+    mkdir /workspace; \
+    chown -R php:php /workspace; \
+    chmod -R 777 /etc/ssmtp/
+
+WORKDIR /workspace
+USER php
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

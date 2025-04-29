@@ -1,6 +1,7 @@
 ARG PHP_VERSION=8.2
 ARG BUILD_ARCH="amd64"
 FROM fbraz3/php-cli:$PHP_VERSION
+USER root
 
 ARG PHP_VERSION
 ARG BUILD_ARCH
@@ -20,6 +21,5 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && mv wp-cli.phar /opt/tools/wp && \
     ln -s /opt/tools/wp /usr/local/bin/wp
 
-#RUN /usr/local/bin/wp --info || exit 1
-
+USER php
 ENTRYPOINT ["/docker-entrypoint.sh"]

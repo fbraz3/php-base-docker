@@ -1,6 +1,7 @@
 ARG PHP_VERSION=8.2
 ARG BUILD_ARCH="amd64"
 FROM fbraz3/php-cli:$PHP_VERSION
+USER root
 
 ARG PHP_VERSION
 ARG BUILD_ARCH
@@ -34,4 +35,5 @@ RUN if dpkg --compare-versions "${PHP_VERSION}" gt "7.1" && dpkg --compare-versi
 
 RUN update-alternatives  --set php /usr/bin/php$PHP_VERSION
 
+USER php
 ENTRYPOINT ["/docker-entrypoint.sh"]

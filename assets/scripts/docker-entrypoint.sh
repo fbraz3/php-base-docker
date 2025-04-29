@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#if [ ! -f /donate ]; then
+#  echo "If you enjoy using this image, please consider donating."
+#  echo "https://github.com/sponsors/fbraz3"
+#  echo "https://www.patreon.com/fbraz3"
+#  echo "Thank you for your support!"
+#  touch /donate
+#fi
+
 # DECLARE/SET VARIABLES
 PHPVERSION=`cat /PHP_VERSION 2>/dev/null`
 if [ -z "$PHPVERSION" ]; then
