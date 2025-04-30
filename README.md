@@ -17,6 +17,9 @@ These images support multiple PHP versions and architectures, ensuring compatibi
 | [wp-cli](https://hub.docker.com/r/fbraz3/wp-cli)             | `/usr/local/bin/wp`       | `docker run -v $pwd:/workspace --rm fbraz3/wp-cli:8.4 plugin install bbpress` | [![Build WP-Cli Images](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml)       |
 | [symfony-cli](https://hub.docker.com/r/fbraz3/symfony-cli)   | `/usr/local/bin/symfony`  | `docker run -v $pwd:/workspace --rm fbraz3/symfony-cli:8.4 server:start`      | [![Build Symfony Images](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml)    |
 
+We also have a [deepwiki page](https://deepwiki.com/fbraz3/php-base-docker) that you can check out for more information about the project and its images:
+
+
 ## Tags
 
 Each image is tagged with the PHP version and architecture. For example:
