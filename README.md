@@ -88,6 +88,8 @@ Is also recommended to refer to [ssmtp documentation](https://wiki.archlinux.org
 
 Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
 
+Please visit the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this project.
+
 Useful links:
 - [How to create a pull request](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 - [How to report an issue](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue)
