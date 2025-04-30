@@ -17,8 +17,7 @@ These images support multiple PHP versions and architectures, ensuring compatibi
 | [wp-cli](https://hub.docker.com/r/fbraz3/wp-cli)             | `/usr/local/bin/wp`       | `docker run -v $pwd:/workspace --rm fbraz3/wp-cli:8.4 plugin install bbpress` | [![Build WP-Cli Images](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml)       |
 | [symfony-cli](https://hub.docker.com/r/fbraz3/symfony-cli)   | `/usr/local/bin/symfony`  | `docker run -v $pwd:/workspace --rm fbraz3/symfony-cli:8.4 server:start`      | [![Build Symfony Images](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml)    |
 
-We also have a [deepwiki page](https://deepwiki.com/fbraz3/php-base-docker) that you can check out for more information about the project and its images:
-
+⚠️ Ask Devin AI about this project on [DeepWiki](https://deepwiki.com/fbraz3/php-base-docker).
 
 ## Tags
 
@@ -51,7 +50,7 @@ If you need to write to a mounted volume, ensure that the `php` user has the nec
 chown -R 1000:1000 /path/to/your/directory
 ```
 
-One workaround for this is to chmod the mounted directory to `777` before running the container. This will allow all users to read, write, and execute files in that directory. However, this is not recommended for production environments due to security concerns.
+A workaround for this is to chmod the mounted directory to `777` before running the container. This will allow all users to read, write, and execute files in that directory. However, this is not recommended for production environments due to security concerns.
 
 There is another workaround for this running the container with the `--user` flag set to `root`, but this is also not recommended for production environments.
 
@@ -67,7 +66,7 @@ It's recommended to change the default SMTP server to your own SMTP server. You 
 docker run -v $pwd:/workspace -e SMTP_MAIL_SERVER=smtp.example.com -e SMTP_AUTH_USER=username -e SMTP_AUTH_PASSWORD=password --rm fbraz3/php-cli:8.4 mail_sending.php
 ```
 
-Note: avoid setting the password in the command line, use a .env file instead.
+‼️Note: avoid setting the password in the command line, use a .env file instead.
 
 For example, create a `.env` file with the following content:
 
