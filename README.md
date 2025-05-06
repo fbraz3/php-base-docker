@@ -1,7 +1,5 @@
 # Braz PHP Docker
 
-## Objective
-
 The **Braz PHP Docker** project provides a set of Docker images tailored for various PHP environments and use cases.
 
 It simplifies the process of setting up PHP development environments by offering pre-configured images for different frameworks and tools, such as Vanilla PHP, Composer, Symfony, WP-CLI, and Phalcon.
@@ -21,7 +19,7 @@ These images support multiple PHP versions and architectures, ensuring compatibi
 
 ## Tags
 
-Each image is tagged with the PHP version and architecture. For example:
+Each image is tagged with the PHP version. For example:
 - `fbraz3/php-cli:8.4` for PHP 8.4
 - `fbraz3/php-cli:8.4-phalcon` for PHP 8.4 with Phalcon extension
 - `fbraz3/php-composer:8.4` for PHP 8.4 with Composer
@@ -39,6 +37,12 @@ This project includes the following flavors:
 - **Phalcon**: An image with the Phalcon PHP framework pre-installed.
 
 Each flavor supports multiple PHP versions, ranging from 5.6 to 8.4, and is available for both `amd64` and `arm64` architectures.
+
+#### Useful Links
+- [PHP CLI](https://www.php.net/manual/en/features.commandline.php)
+- [Wp CLI](https://wp-cli.org/)
+- [Symfony CLI](https://symfony.com/download)
+- [Phalcon](https://phalcon.io/)
 
 ## Permissions
 
@@ -92,15 +96,15 @@ Contributions are welcome! Feel free to open issues or submit pull requests to i
 
 Please visit the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this project.
 
-Useful links:
+#### Useful links
 - [How to create a pull request](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 - [How to report an issue](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue)
 
 ## Donation
 
 I spend a lot of time and effort maintaining this project. If you find it useful, consider supporting me with a donation:
-- [Patreon](https://www.patreon.com/fbraz3)
 - [GitHub Sponsor](https://github.com/sponsors/fbraz3)
+- [Patreon](https://www.patreon.com/fbraz3)
 
 ## License
 
