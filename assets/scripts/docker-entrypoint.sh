@@ -23,7 +23,8 @@ if [ -d "/entrypoints" ]; then
 fi
 
 if [[ -d /etc/monit/ ]] && [[ "$RESTART_MONIT" == "true" ]]; then
-    /usr/sbin/service monit start
+  sleep 1
+  /usr/sbin/service monit start
 fi
 
 exec $ENTRYPOINT_COMMAND "$@"
