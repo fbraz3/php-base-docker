@@ -1,4 +1,4 @@
-name: Build Base Images
+name: Build PHP-Cli Images
 
 on:
   workflow_dispatch:
