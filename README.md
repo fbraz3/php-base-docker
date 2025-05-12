@@ -6,6 +6,8 @@ It simplifies the process of setting up PHP development environments by offering
 
 These images support multiple PHP versions and architectures, ensuring compatibility and flexibility for developers.
 
+We also provide an AI generated [DeepWiki Page](https://deepwiki.com/fbraz3/php-base-docker) with more technical information.
+
 💡 For a complete list of available images, please visit the [PHP System Docs](https://github.com/fbraz3/php-system-docs) page.
 
 ## Table of Contents
@@ -31,8 +33,6 @@ To use the images, you can pull them from Docker Hub and run them with your PHP 
 | [php-composer](https://hub.docker.com/r/fbraz3/php-composer) | `/usr/local/bin/composer` | `docker run -v $pwd:/workspace --rm fbraz3/php-composer:8.4 init`             | [![Build Composer Images](https://github.com/fbraz3/php-base-docker/actions/workflows/composer-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/composer-images.yml) |
 | [wp-cli](https://hub.docker.com/r/fbraz3/wp-cli)             | `/usr/local/bin/wp`       | `docker run -v $pwd:/workspace --rm fbraz3/wp-cli:8.4 plugin install bbpress` | [![WP-Cli Images](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml)             |
 | [symfony-cli](https://hub.docker.com/r/fbraz3/symfony-cli)   | `/usr/local/bin/symfony`  | `docker run -v $pwd:/workspace --rm fbraz3/symfony-cli:8.4 server:start`      | [![Symfony Images](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml)          |
-
-For more technical information, please visit our  [DeepWiki Page](https://deepwiki.com/fbraz3/php-base-docker) (AI generated).
 
 ## Tags
 
