@@ -6,6 +6,23 @@ It simplifies the process of setting up PHP development environments by offering
 
 These images support multiple PHP versions and architectures, ensuring compatibility and flexibility for developers.
 
+💡 For a complete list of available images, please visit the [PHP System Docs](https://github.com/fbraz3/php-system-docs) page.
+
+## Table of Contents
+
+- [Braz PHP Docker](#braz-php-docker)
+  - [Usage](#usage)
+  - [Tags](#tags)
+  - [Flavors](#flavors)
+  - [Permissions](#permissions)
+  - [Sending Emails](#sending-emails)
+  - [Contribution](#contribution)
+  - [Donation](#donation)
+  - [License](#license)
+
+## Usage
+
+To use the images, you can pull them from Docker Hub and run them with your PHP scripts or commands. Here are some examples of how to use the images:
 
 | Docker Image                                                 | Entrypoint                | Command Example                                                               | Build Status                                                                                                                                                                                           |
 |--------------------------------------------------------------|---------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
