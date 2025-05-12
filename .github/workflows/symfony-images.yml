@@ -1,4 +1,4 @@
-name: Build Symfony Images
+name: Symfony Images
 
 on:
   workflow_dispatch:

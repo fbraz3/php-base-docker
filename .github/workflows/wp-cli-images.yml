@@ -1,4 +1,4 @@
-name: Build WP-Cli Images
+name: WP-Cli Images
 
 on:
   workflow_dispatch:

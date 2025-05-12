@@ -1,4 +1,4 @@
-name: Build Composer Images
+name: Composer Images
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build Phalcon Images
+name: PHP-Cli Phalcon Images
 
 on:
   workflow_dispatch:
