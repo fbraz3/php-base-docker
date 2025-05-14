@@ -1,4 +1,4 @@
-name: Composer Images
+name: PHP Composer
 
 on:
   workflow_dispatch:

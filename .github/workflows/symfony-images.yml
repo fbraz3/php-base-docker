@@ -1,4 +1,4 @@
-name: Symfony Images
+name: PHP Symfony
 
 on:
   workflow_dispatch:

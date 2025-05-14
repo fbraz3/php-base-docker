@@ -1,4 +1,4 @@
-name: PHP-Cli Vanilla Images
+name: PHP-Cli Vanilla
 
 on:
   workflow_dispatch:
