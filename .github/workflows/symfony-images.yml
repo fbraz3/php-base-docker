@@ -1,4 +1,4 @@
-name: PHP Symfony
+name: Symfony Cli
 
 on:
   workflow_dispatch:
