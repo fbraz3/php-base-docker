@@ -1,4 +1,4 @@
-name: WordPress CLI
+name: WordPress Cli
 
 on:
   workflow_dispatch:
