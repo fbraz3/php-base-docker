@@ -34,6 +34,32 @@ To use the images, you can pull them from Docker Hub and run them with your PHP 
 | [wp-cli](https://hub.docker.com/r/fbraz3/wp-cli)              | `/usr/local/bin/wp`       | `docker run -v $(pwd):/workspace --rm fbraz3/wp-cli:8.4 plugin install bbpress` | [![WP-Cli Images](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/wp-cli-images.yml)             |
 | [symfony-cli](https://hub.docker.com/r/fbraz3/symfony-cli)    | `/usr/local/bin/symfony`  | `docker run -v $(pwd):/workspace --rm fbraz3/symfony-cli:8.4 server:start`      | [![Symfony Images](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml/badge.svg)](https://github.com/fbraz3/php-base-docker/actions/workflows/symfony-images.yml)          |
 
+### Practical examples
+
+```bash
+# Run a standalone PHP script
+docker run -it --rm fbraz3/php-cli:latest php myscript.php
+
+# Run a PHP built-in server with Phalcon framework support
+docker run -it --rm -v $(pwd):/workspace -p 8000:8000 fbraz3/php-cli:latest-phalcon php -S localhost:8000
+
+# Install a fresh wordpress using wp-cli
+docker run -it --rm -v $(pwd):/workspace fbraz3/wp-cli:latest core download --path=/workspace
+
+# Install a fresh symfony using symfony-cli
+docker run -it --rm -v $(pwd):/workspace fbraz3/symfony-cli:latest new my_project_name
+```
+
+You may want to add these executable aliases to your `.bashrc` or `.zshrc` for convenience.
+
+```bash
+PHP_VERSION=8.4 # Replace with your preferred PHP version
+php() { docker run -v "$(pwd):/workspace" --rm fbraz3/php-cli:$PHP_VERSION "$@"; }
+composer() { docker run -v "$(pwd):/workspace" --rm fbraz3/php-composer:$PHP_VERSION "$@"; }
+wp() { docker run -v "$(pwd):/workspace" --rm fbraz3/wp-cli:$PHP_VERSION "$@"; }
+symfony() { docker run -v "$(pwd):/workspace" --rm fbraz3/symfony-cli:$PHP_VERSION "$@"; }
+```
+
 ## Tags
 
 Each image is tagged with the PHP version. For example:
