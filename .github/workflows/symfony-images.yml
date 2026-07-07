@@ -53,8 +53,8 @@ jobs:
           context: .
           file: flavors/symfony/Dockerfile
           load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ github.workflow }}-${{ matrix.php_version }}-amd64
+          cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.php_version }}-amd64
           build-args: |
               PHP_VERSION=${{ matrix.php_version }}
           tags: |
@@ -73,8 +73,8 @@ jobs:
           context: .
           file: flavors/symfony/Dockerfile
           load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ github.workflow }}-${{ matrix.php_version }}-arm64
+          cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.php_version }}-arm64
           build-args: |
               PHP_VERSION=${{ matrix.php_version }}
           tags: |
@@ -99,8 +99,10 @@ jobs:
           context: .
           file: flavors/symfony/Dockerfile
           push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=${{ github.workflow }}-${{ matrix.php_version }}-amd64
+            type=gha,scope=${{ github.workflow }}-${{ matrix.php_version }}-arm64
+          cache-to: type=gha,mode=max,scope=${{ github.workflow }}-${{ matrix.php_version }}-multi
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
           tags: |
