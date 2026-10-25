@@ -41,7 +41,7 @@ RUN apt-get install -yq php$PHP_VERSION php$PHP_VERSION-cli \
     apt -fy remove apache2; apt -fy autoremove;
 
 # Apply latest security updates
-RUN /usr/bin/unattended-upgrades -v
+RUN apt-get update && apt-get -yq dist-upgrade
 
 # Add SSMTP configuration
 COPY --chmod=755 ../../assets/conf/ssmtp.conf.template /etc/ssmtp/
