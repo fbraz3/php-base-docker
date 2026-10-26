@@ -20,8 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php_version: '8.4'
+          - php_version: '8.5'
             is_latest: true
+          - php_version: '8.4'
+            is_latest: false
           - php_version: '8.3'
             is_latest: false
           - php_version: '8.2'
